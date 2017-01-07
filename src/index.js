@@ -25,8 +25,8 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 			return getAlbums();
 		})
 		.then(albums => {
-			const cameraRoll = albums.find(album => album.type === albumType);
-			return getMedia(cameraRoll);
+			const album = albums.find(album => album.type === albumType);
+			return getMedia(album);
 		})
 		.then(items => {
 			// Limit number of items for which the data is looked up (because
@@ -47,52 +47,81 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 
 const getAlbums = () =>
 	new Promise((resolve, reject) => {
-		window.galleryAPI.getAlbums(albums => resolve(albums), e => reject(`Failed to get albums: ${e}`));
+		window.galleryAPI.getAlbums(
+			albums => resolve(albums),
+			e => reject(`Failed to get albums: ${e}`)
+		);
 	});
 const getMedia = (album) =>
 	new Promise((resolve, reject) => {
-		window.galleryAPI.getMedia(album, items => resolve(items), e => reject(`Failed to load items for album ${album.id}: ${e}`));
+		window.galleryAPI.getMedia(
+			album,
+			items => resolve(items),
+			e => reject(`Failed to load items for album ${album.id}: ${e}`)
+		);
 	});
 const getMediaThumbnail = (item) =>
 	new Promise((resolve, reject) => {
-		window.galleryAPI.getMediaThumbnail(item, enrichedItem => resolve(enrichedItem), e => reject(`Failed to load thumbnail for item ${item.id}: ${e}`));
+		window.galleryAPI.getMediaThumbnail(
+			item,
+			enrichedItem => resolve(enrichedItem),
+			e => reject(`Failed to load thumbnail for item ${item.id}: ${e}`)
+		);
 	});
 const resolveLocalFileSystemThumbnailURL = (photo) =>
 	new Promise((resolve, reject) => {
 		const path = `file:///private/${photo.thumbnail}`;
-		window.resolveLocalFileSystemURL(path, url => {
-			const resolvedPhoto = Object.assign({}, photo, {
-				url: url.toURL()
-			});
-			resolve(resolvedPhoto);
-		}, e => reject(`Failed to resolve URL for path ${path}: ${e}`));
+		window.resolveLocalFileSystemURL(
+			path,
+			url => {
+				const resolvedPhoto = Object.assign({}, photo, {
+					url: url.toURL()
+				});
+				resolve(resolvedPhoto);
+			},
+			e => reject(`Failed to resolve URL for path ${path}: ${e}`)
+		);
 	});
 const _requestFileSystem = (type) =>
 	new Promise((resolve, reject) => {
-		window.requestFileSystem(type, 0, fs => resolve(fs), e => reject(`Failed to request file system: ${JSON.stringify(e)}`));
+		window.requestFileSystem(
+			type,
+			0,
+			fs => resolve(fs),
+			e => reject(`Failed to request file system: ${JSON.stringify(e)}`)
+		);
 	});
 const _getFile = (fs, item) =>
 	new Promise((resolve, reject) => {
 		const pathStrippedPrefix = item.url.substr('cdvfile://localhost/temporary'.length);
 		const path = decodeURI(pathStrippedPrefix);
-		fs.root.getFile(path, {}, file => {
-			resolve(Object.assign({}, item, {
-				file: resolve(file)
-			}));
-		}, e => reject(`Failed to get file for ${path}: ${JSON.stringify(e)}`));
+
+		fs.root.getFile(
+			path,
+			{},
+			file => {
+				resolve(Object.assign({}, item, {
+					file: resolve(file)
+				}));
+			},
+			e => reject(`Failed to get file for ${path}: ${JSON.stringify(e)}`)
+		);
 	});
 const _readAsDataURL = (item) =>
 	new Promise((resolve, reject) => {
-		item.file(file => {
-			const reader = new window.FileReader();
-			reader.onloadend = function(e) {
-				resolve(Object.assign({}, item, {
-					dataUrl: e.target.result
-				}));
-			};
-			reader.onerror = e => reject(`Failed to read file as data URL: ${JSON.stringify(e)}`);
-			reader.readAsDataURL(file);
-		}, e => reject(`Failed to retrieve file from entry: ${JSON.stringify(e)}`));
+		item.file(
+			file => {
+				const reader = new window.FileReader();
+				reader.onloadend = function(e) {
+					resolve(Object.assign({}, item, {
+						dataUrl: e.target.result
+					}));
+				};
+				reader.onerror = e => reject(`Failed to read file as data URL: ${JSON.stringify(e)}`);
+				reader.readAsDataURL(file);
+			},
+			e => reject(`Failed to retrieve file from entry: ${JSON.stringify(e)}`)
+		);
 	});
 
 module.exports = {

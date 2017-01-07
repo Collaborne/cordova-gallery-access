@@ -1,6 +1,8 @@
 # cordova-gallery-access
 Reads photos & videos from an album (e.g. Camera Roll) and returns them as dataURLs
 
+Tested for iOS and Android. Likely works also for other platforms (but not tested).
+
 ## Install
 
 ~~~~

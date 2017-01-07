@@ -31,3 +31,17 @@ cordovaGallery.load().then(items => {
     document.getElementById("content").innerHTML = html;
 }).catch(e => console.error(e));
 ```
+
+The `load` method supports optional parameters:
+
+```javascript
+Collaborne.CordovaGallery.load({
+    albumType: 'PHAssetCollectionSubtypeSmartAlbumUserLibrary',
+    count: 10
+});
+```
+
+| Option      | Description                                          |
+| ----------- | ---------------------------------------------------- |
+| *albumType* | Type of the album from which the items will be taken |
+| *count*     | Maximal number of items that will be returned        |

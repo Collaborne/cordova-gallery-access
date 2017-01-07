@@ -4,12 +4,12 @@
  * Loads the most recent items from an album
  * @param  {String} [albumType='PHAssetCollectionSubtypeSmartAlbumUserLibrary']
  *         Album that should be loaded. Default is "Camera Roll"
- * @param  {Number} [limit=5]
+ * @param  {Number} [count=5]
  *         Maxmimum number of returned items (keep this number reasonable because loading photos is expensive)
  * @return {Promise}
  *         Promise that will return all items once it resolves
  */
-const load = (albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', limit = 5) => {
+const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', count = 5 } = {}) => {
 	if (!window.resolveLocalFileSystemURL) {
 		throw new Error('This library only works within Cordova applications.');
 	}
@@ -31,7 +31,7 @@ const load = (albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', limit
 		.then(items => {
 			// Limit number of items for which the data is looked up (because
 			// it's expensive)
-			const limitedItems = items.slice(0, limit);
+			const limitedItems = items.slice(0, count);
 
 			// Enrich photos by their thumbnail
 			const promises = limitedItems.map(item =>

@@ -16,9 +16,13 @@ cordova plugin add https://github.com/SuryaL/cordova-gallery-api.git --save
 
 ## Usage
 
+This examples shows the recently taken photos from the Camera Roll:
+
 ```javascript
-// Load recently photos
-Collaborne.CordovaGallery.load().then(items => {
+
+const cordovaGallery = require('cordova-gallery-access');
+
+cordovaGallery.load().then(items => {
     let html = '';
     items.forEach(item => {
         html += `<img src="${item.dataUrl}"></img>`;

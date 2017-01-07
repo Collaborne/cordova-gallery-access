@@ -43,7 +43,7 @@ Collaborne.CordovaGallery.load({
 
 Supported options:
 
-| Option      | Description                                          |
-| ----------- | ---------------------------------------------------- |
-| *albumType* | Type of the album from which the items will be taken |
-| *count*     | Maximal number of items that will be returned        |
+| Option        | Description                                          |
+| ------------- | ---------------------------------------------------- |
+| **albumType** | Type of the album from which the items will be taken |
+| **count**     | Maximal number of items that will be returned        |

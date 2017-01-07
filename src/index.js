@@ -33,7 +33,7 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 			// it's expensive)
 			const limitedItems = items.slice(0, count);
 
-			// Enrich photos by their thumbnail
+			// Enrich items with their thumbnail
 			const promises = limitedItems.map(item =>
 				getMediaThumbnail(item)
 					.then(enrichedItem => resolveLocalFileSystemThumbnailURL(enrichedItem))
@@ -47,11 +47,11 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 
 const getAlbums = () =>
 	new Promise((resolve, reject) => {
-		window.galleryAPI.getAlbums(albums => resolve(albums), e => reject(`Failed albums: ${e}`));
+		window.galleryAPI.getAlbums(albums => resolve(albums), e => reject(`Failed to get albums: ${e}`));
 	});
 const getMedia = (album) =>
 	new Promise((resolve, reject) => {
-		window.galleryAPI.getMedia(album, items => resolve(items), e => reject(`Failed loading items for album ${album.id}: ${e}`));
+		window.galleryAPI.getMedia(album, items => resolve(items), e => reject(`Failed to load items for album ${album.id}: ${e}`));
 	});
 const getMediaThumbnail = (item) =>
 	new Promise((resolve, reject) => {
@@ -69,7 +69,7 @@ const resolveLocalFileSystemThumbnailURL = (photo) =>
 	});
 const _requestFileSystem = (type) =>
 	new Promise((resolve, reject) => {
-		window.requestFileSystem(type, 0, fs => resolve(fs), e => reject(`Failed to request file system: ${e}`));
+		window.requestFileSystem(type, 0, fs => resolve(fs), e => reject(`Failed to request file system: ${JSON.stringify(e)}`));
 	});
 const _getFile = (fs, item) =>
 	new Promise((resolve, reject) => {
@@ -79,7 +79,7 @@ const _getFile = (fs, item) =>
 			resolve(Object.assign({}, item, {
 				file: resolve(file)
 			}));
-		}, e => reject(`Failed to get file ${path}: ${JSON.stringify(e)}`));
+		}, e => reject(`Failed to get file for ${path}: ${JSON.stringify(e)}`));
 	});
 const _readAsDataURL = (item) =>
 	new Promise((resolve, reject) => {

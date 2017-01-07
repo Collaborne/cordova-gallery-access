@@ -105,7 +105,7 @@ const _getFile = (fs, item) =>
 			{},
 			file => {
 				resolve(Object.assign({}, item, {
-					file: resolve(file)
+					file
 				}));
 			},
 			e => reject(`Failed to get file for ${path}: ${JSON.stringify(e)}`)

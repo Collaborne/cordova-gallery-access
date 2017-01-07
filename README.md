@@ -41,6 +41,8 @@ Collaborne.CordovaGallery.load({
 });
 ```
 
+Supported options:
+
 | Option      | Description                                          |
 | ----------- | ---------------------------------------------------- |
 | *albumType* | Type of the album from which the items will be taken |

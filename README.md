@@ -1,5 +1,5 @@
 # cordova-gallery-access
-Reads photos & videos from an album (e.g. Camera Roll) and returns them as dataURLs
+Reads photos & videos from an album (e.g. Camera Roll)
 
 Tested for iOS and Android. Likely works also for other platforms (but not tested).
 
@@ -27,7 +27,7 @@ const cordovaGallery = require('cordova-gallery-access');
 cordovaGallery.load().then(items => {
     let html = '';
     items.forEach(item => {
-        html += `<img src="${item.dataUrl}"></img>`;
+        html += `<img src="file://${item.thumbnail}"></img>`;
     });
 
     document.getElementById("content").innerHTML = html;

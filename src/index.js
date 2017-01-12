@@ -59,6 +59,14 @@ const getMediaThumbnail = (item) =>
 		);
 	});
 
+/**
+ * Checks if all required libaries are available to load galley items. Use this
+ * check to verify if the app runs in a Cordova environment.
+ * @return {Boolean} True if items can be loaded from the gallery
+ */
+const isSupported = () => Boolean(window.galleryAPI);
+
 module.exports = {
 	load,
+	isSupported,
 };

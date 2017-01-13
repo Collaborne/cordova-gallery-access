@@ -29,7 +29,11 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 			const limitedItems = items.slice(0, count);
 
 			// Enrich items with their thumbnail
-			const promises = limitedItems.map(item => getMediaThumbnail(item));
+			const promises = limitedItems
+				.map(item => getMediaThumbnail(item)
+					.then(itemWithThumbnail => Object.assign(itemWithThumbnail, {
+						source: 'device-gallery'
+					})));
 
 			return Promise.all(promises);
 		});
@@ -60,6 +64,20 @@ const getMediaThumbnail = (item) =>
 	});
 
 /**
+ * Gets the filepath to the high quality version of the mediaitem
+ * @param  {Object} item Media item for which the HQ version should be looked up
+ * @return {String}      Path to the HQ version of the mediaitem
+ */
+const getHQImageData = (item) =>
+	new Promise((resolve, reject) => {
+		window.galleryAPI.getHQImageData(
+			item,
+			hqFilePath => resolve(hqFilePath),
+			e => reject(`Failed to load HQ image data for item ${item.id}: ${e}`)
+		);
+	});
+
+/**
  * Checks if all required libaries are available to load galley items. Use this
  * check to verify if the app runs in a Cordova environment.
  * @return {Boolean} True if items can be loaded from the gallery
@@ -68,5 +86,6 @@ const isSupported = () => Boolean(window.galleryAPI);
 
 module.exports = {
 	load,
+	getHQImageData,
 	isSupported,
 };

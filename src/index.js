@@ -29,11 +29,7 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 			const limitedItems = items.slice(0, count);
 
 			// Enrich items with their thumbnail
-			const promises = limitedItems
-				.map(item => getMediaThumbnail(item)
-					.then(itemWithThumbnail => Object.assign(itemWithThumbnail, {
-						source: 'device-gallery'
-					})));
+			const promises = limitedItems.map(item => getMediaThumbnail(item));
 
 			return Promise.all(promises);
 		});
@@ -78,6 +74,61 @@ const getHQImageData = (item) =>
 	});
 
 /**
+ * Gets a reference to a local file
+ * @param  {String} filePath Path of the to be loaded file
+ * @return {Object}
+ */
+const getFile = (filePath) => {
+	let fileSystem;
+	return requestFileSystem(window.LocalFileSystem.TEMPORARY)
+		.then(fs => {
+			fileSystem = fs;
+
+			return resolveLocalFileSystemThumbnailURL(filePath);
+		})
+		.then(localFilePath => getFileFromFS(fileSystem, localFilePath));
+};
+const requestFileSystem = (type) =>
+	new Promise((resolve, reject) => {
+		window.requestFileSystem(
+			type,
+			0,
+			fs => resolve(fs),
+			e => reject(`Failed to request file system: ${JSON.stringify(e)}`)
+		);
+	});
+const resolveLocalFileSystemThumbnailURL = (filePath) =>
+	new Promise((resolve, reject) => {
+		const path = `file:///private/${filePath}`;
+		window.resolveLocalFileSystemURL(
+			path,
+			url => resolve(url.fullPath),
+			e => reject(`Failed to resolve URL for path ${filePath}: ${e}`)
+		);
+	});
+const getFileFromFS = (fs, localFilePath) =>
+	new Promise((resolve, reject) => {
+		const path = decodeURI(localFilePath);
+
+		fs.root.getFile(
+			path,
+			{},
+			file => resolve(file),
+			e => reject(`Failed to get file for ${path}: ${JSON.stringify(e)}`)
+		);
+	});
+
+/**
+ * Removes the prefix from a string. Returns the same string if it doesn't
+ * start with the prefix.
+ * @param  {String} str    String from which the prefix should be stripped
+ * @param  {String} prefix Prefix to be removed
+ * @return {String}
+ */
+const stripPrefix = (str, prefix) =>
+	str.startsWith(prefix) ? str.substr(prefix.length) : str;
+
+/**
  * Checks if all required libaries are available to load galley items. Use this
  * check to verify if the app runs in a Cordova environment.
  * @return {Boolean} True if items can be loaded from the gallery
@@ -87,5 +138,6 @@ const isSupported = () => Boolean(window.galleryAPI);
 module.exports = {
 	load,
 	getHQImageData,
+	getFile,
 	isSupported,
 };

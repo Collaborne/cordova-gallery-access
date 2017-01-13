@@ -1,6 +1,6 @@
 {
   "name": "cordova-gallery-access",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Reads photos & videos from an album (e.g. Camera Roll)",
   "keywords": [
     "cordova",

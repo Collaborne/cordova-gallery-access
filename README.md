@@ -3,6 +3,8 @@ Reads photos & videos from an album (e.g. Camera Roll)
 
 Tested for iOS and Android. Likely works also for other platforms (but not tested).
 
+This (blog post)[https://medium.com/collaborne-engineering/my-cordova-nightmares-accessing-photos-from-the-phones-gallery-7528a0860555#.jq0oqswb8] explains the challenges that this library addresses and the approach how it solves them.
+
 ## Install
 
 ~~~~

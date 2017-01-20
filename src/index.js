@@ -79,42 +79,36 @@ const getHQImageData = (item) =>
  * @return {Object}
  */
 const getFile = (filePath) => {
-	let fileSystem;
-	return requestFileSystem(window.LocalFileSystem.TEMPORARY)
-		.then(fs => {
-			fileSystem = fs;
-
-			return resolveLocalFileSystemThumbnailURL(filePath);
-		})
-		.then(localFilePath => getFileFromFS(fileSystem, localFilePath));
+	return resolveLocalFileSystemURL(filePath)
+		.then(fileEntry => enrichFileSize(fileEntry));
 };
-const requestFileSystem = (type) =>
-	new Promise((resolve, reject) => {
-		window.requestFileSystem(
-			type,
-			0,
-			fs => resolve(fs),
-			e => reject(`Failed to request file system: ${JSON.stringify(e)}`)
-		);
-	});
-const resolveLocalFileSystemThumbnailURL = (filePath) =>
+/**
+ * Resolve the fileEntry for a path
+ * @param  {String} filePath Path
+ * @return {FileEntry}       Resolved fileEntry
+ */
+const resolveLocalFileSystemURL = (filePath) =>
 	new Promise((resolve, reject) => {
 		const path = `file:///private/${filePath}`;
 		window.resolveLocalFileSystemURL(
 			path,
-			url => resolve(url.fullPath),
+			fileEntry => resolve(fileEntry),
 			e => reject(`Failed to resolve URL for path ${filePath}: ${e}`)
 		);
 	});
-const getFileFromFS = (fs, localFilePath) =>
+/**
+ * Adds the size to the file entry by resolving the file entry
+ * @param  {FileEntry} fileEntry File entry to be resolved
+ * @return {FileEntry}           File entry with the size field
+ */
+const enrichFileSize = (fileEntry) =>
 	new Promise((resolve, reject) => {
-		const path = decodeURI(localFilePath);
-
-		fs.root.getFile(
-			path,
-			{},
-			file => resolve(file),
-			e => reject(`Failed to get file for ${path}: ${JSON.stringify(e)}`)
+		fileEntry.file(
+			file => {
+				fileEntry.size = file.size;
+				resolve(fileEntry);
+			},
+			e => reject(`Failed to resolve file entry ${fileEntry}: ${JSON.stringify(e)}`)
 		);
 	});
 

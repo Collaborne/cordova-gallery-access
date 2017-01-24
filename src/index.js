@@ -108,7 +108,7 @@ const resolveLocalFileSystemURL = (filePath) =>
 		window.resolveLocalFileSystemURL(
 			path,
 			fileEntry => resolve(fileEntry),
-			e => reject(`Failed to resolve URL for path ${filePath}: ${e}`)
+			e => reject(`Failed to resolve URL for path ${filePath}: ${JSON.stringify(e)}`)
 		);
 	});
 /**

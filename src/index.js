@@ -18,7 +18,7 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 		.then(albums => {
 			const album = albums.find(album => album.type === albumType);
 			if (!album) {
-				throw new Error(`Album of type ${albumType} is unknown. Available albums: ${albums}`);
+				throw new Error(`Album of type ${albumType} is unknown. Available albums: ${JSON.stringify(albums)}`);
 			}
 
 			return getMedia(album);

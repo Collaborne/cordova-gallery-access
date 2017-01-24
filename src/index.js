@@ -1,25 +1,20 @@
 'use strict';
 
 /**
- * Loads the most recent items from an album
- * @param  {String} [albumType='PHAssetCollectionSubtypeSmartAlbumUserLibrary']
- *         Album that should be loaded. Default is "Camera Roll"
+ * Loads the most recent items from the Camera Roll
  * @param  {Number} [count=5]
  *         Maxmimum number of returned items
  * @return {Promise}
  *         Promise that will return all items once it resolves
  */
-const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', count = 5 } = {}) => {
+const load = ({ count = 5 } = {}) => {
 	if (!window.galleryAPI) {
 		throw new Error('Gallery API is not available. Add https://github.com/SuryaL/cordova-gallery-api.git to your config.xml.');
 	}
 
 	return getAlbums()
 		.then(albums => {
-			const album = albums.find(album => album.type === albumType);
-			if (!album) {
-				throw new Error(`Album of type ${albumType} is unknown. Available albums: ${JSON.stringify(albums)}`);
-			}
+			const album = _findCameraRollAlbum(albums);
 
 			return getMedia(album);
 		})
@@ -35,6 +30,26 @@ const load = ({ albumType = 'PHAssetCollectionSubtypeSmartAlbumUserLibrary', cou
 		});
 };
 
+/**
+ * Finds in the list of available albums the one pointing to the device camera:
+ * - iOS: type is "PHAssetCollectionSubtypeSmartAlbumUserLibrary"
+ * - Android: title is "Camera"
+ * @param  {Array} albums List of all available albums
+ * @return {Object}       Album representing the Camera Roll
+ */
+const _findCameraRollAlbum = (albums) => {
+	const isCameraRollAlbum = albums.find(album => album.type === 'PHAssetCollectionSubtypeSmartAlbumUserLibrary');
+	if (isCameraRollAlbum) {
+		return isCameraRollAlbum;
+	}
+
+	const androidCameraRollAlbum = albums.find(album => album.title === 'Camera');
+	if (androidCameraRollAlbum) {
+		return androidCameraRollAlbum;
+	}
+
+	throw new Error(`Can't find Camera Roll album. Available albums: ${JSON.stringify(albums)}`);
+};
 const getAlbums = () =>
 	new Promise((resolve, reject) => {
 		window.galleryAPI.getAlbums(
@@ -134,4 +149,7 @@ module.exports = {
 	getHQImageData,
 	getFile,
 	isSupported,
+
+	// Visible for testing
+	_findCameraRollAlbum,
 };

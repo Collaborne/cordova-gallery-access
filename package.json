@@ -24,7 +24,8 @@
     "build": "npm run build-dist && npm run build-min",
     "build-dist": "mkdir -p dist && browserify -r $npm_package_main:cordova-gallery-access > dist/cordova-gallery-access.js",
     "build-min": "uglifyjs dist/cordova-gallery-access.js --comments -o dist/cordova-gallery-access.min.js",
-    "prepublish": "npm run compile && npm run build"
+    "prepublish": "npm run compile && npm run build",
+    "test": "mocha --recursive"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,8 @@
     "eslint": "^2.13.1",
     "eslint-config-flickr": "~1.1.8",
     "expect": "1.14.0",
-    "uglify-js": "2.6.2"
+    "uglify-js": "2.6.2",
+    "chai": "*",
+    "mocha": "*"
   }
 }

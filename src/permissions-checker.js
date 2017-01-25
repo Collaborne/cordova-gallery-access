@@ -21,7 +21,7 @@ const Permission = {
 function ensurePermission(permission) {
 	if (!window.cordova || !window.cordova.plugins || !window.cordova.plugins.permissions) {
 		// Assume the permission is there if not Android 6 permission system
-		Promise.resolve();
+		return Promise.resolve();
 	}
 
 	let devicePermission;

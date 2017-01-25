@@ -86,7 +86,7 @@ const getHQImageData = (item) =>
 	new Promise((resolve, reject) => {
 		window.galleryAPI.getHQImageData(
 			item,
-			hqFilePath => resolve(hqFilePath),
+			hqFilePath => resolve('file://' + hqFilePath),
 			e => reject(`Failed to load HQ image data for item ${item.id}: ${e}`)
 		);
 	});
@@ -107,9 +107,8 @@ const getFile = (filePath) => {
  */
 const resolveLocalFileSystemURL = (filePath) =>
 	new Promise((resolve, reject) => {
-		const path = `file:///private/${filePath}`;
 		window.resolveLocalFileSystemURL(
-			path,
+			filePath,
 			fileEntry => resolve(fileEntry),
 			e => reject(`Failed to resolve URL for path ${filePath}: ${JSON.stringify(e)}`)
 		);

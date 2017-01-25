@@ -5,6 +5,10 @@ Tested for iOS and Android. Likely works also for other platforms (but not teste
 
 This (blog post)[https://medium.com/collaborne-engineering/my-cordova-nightmares-accessing-photos-from-the-phones-gallery-7528a0860555#.jq0oqswb8] explains the challenges that this library addresses and the approach how it solves them.
 
+The module can automatically check if the user granted the required permission.
+For Android 6 permission checks this requires to add (cordova-plugin-android-permission)[https://github.com/NeoLSN/cordova-plugin-android-permission] to the Cordova application.
+
+
 ## Install
 
 ~~~~

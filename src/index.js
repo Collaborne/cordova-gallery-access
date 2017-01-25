@@ -1,5 +1,7 @@
 'use strict';
 
+const permissionsChecker = require('./permissions-checker.js');
+
 /**
  * Loads the most recent items from the Camera Roll
  * @param  {Number} [count=5]
@@ -12,7 +14,8 @@ const load = ({ count = 5 } = {}) => {
 		throw new Error('Gallery API is not available. Add https://github.com/SuryaL/cordova-gallery-api.git to your config.xml.');
 	}
 
-	return getAlbums()
+	return permissionsChecker.ensurePermission(permissionsChecker.Permission.GET_ALBUMS)
+		.then(() => getAlbums())
 		.then(albums => {
 			const album = _findCameraRollAlbum(albums);
 
@@ -126,16 +129,6 @@ const enrichFileSize = (fileEntry) =>
 			e => reject(`Failed to resolve file entry ${fileEntry}: ${JSON.stringify(e)}`)
 		);
 	});
-
-/**
- * Removes the prefix from a string. Returns the same string if it doesn't
- * start with the prefix.
- * @param  {String} str    String from which the prefix should be stripped
- * @param  {String} prefix Prefix to be removed
- * @return {String}
- */
-const stripPrefix = (str, prefix) =>
-	str.startsWith(prefix) ? str.substr(prefix.length) : str;
 
 /**
  * Checks if all required libaries are available to load galley items. Use this

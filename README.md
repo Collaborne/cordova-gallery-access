@@ -1,4 +1,6 @@
 # cordova-gallery-access
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Collaborne/cordova-gallery-access.svg)](https://greenkeeper.io/)
 Reads photos & videos from an album (e.g. Camera Roll)
 
 Tested for iOS and Android. Likely works also for other platforms (but not tested).

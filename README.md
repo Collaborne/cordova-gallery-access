@@ -1,4 +1,5 @@
-# cordova-gallery-access
+# cordova-gallery-access [![Build Status](https://travis-ci.org/Collaborne/cordova-gallery-access.svg)](https://travis-ci.org/Collaborne/cordova-gallery-access)
+
 Reads photos & videos from an album (e.g. Camera Roll)
 
 Tested for iOS and Android. Likely works also for other platforms (but not tested).

@@ -20,7 +20,7 @@ The library uses the Cordova plugin [cordova-gallery-api](https://github.com/Col
 which you therefore need to install to your Cordova application:
 
 ```bash
-cordova plugin add https://github.com/Collaborne/cordova-gallery-api.git --save
+cordova plugin add https://github.com/Collaborne/cordova-gallery-api.git --save --nofetch
 ```
 
 ## Usage

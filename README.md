@@ -16,11 +16,11 @@ For Android 6 permission checks this requires to add [cordova-plugin-android-per
 npm install cordova-gallery-access --save
 ~~~~
 
-The library uses the Cordova plugin [cordova-gallery-api](https://github.com/SuryaL/cordova-gallery-api.git),
+The library uses the Cordova plugin [cordova-gallery-api](https://github.com/Collaborne/cordova-gallery-api.git),
 which you therefore need to install to your Cordova application:
 
 ```bash
-cordova plugin add https://github.com/SuryaL/cordova-gallery-api.git --save
+cordova plugin add https://github.com/Collaborne/cordova-gallery-api.git --save
 ```
 
 ## Usage

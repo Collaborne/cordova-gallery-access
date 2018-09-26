@@ -98,7 +98,7 @@ const getHQImageData = (item) =>
  */
 const getFile = (filePath) => {
 	return resolveLocalFileSystemURL(filePath)
-		.then(fileEntry => enrichFileSize(fileEntry));
+		.then(fileEntry => enrichFile(fileEntry));
 };
 /**
  * Resolve the fileEntry for a path
@@ -114,15 +114,17 @@ const resolveLocalFileSystemURL = (filePath) =>
 		);
 	});
 /**
- * Adds the size to the file entry by resolving the file entry
+ * Enriches the file entry with size and type by resolving the file entry
  * @param  {FileEntry} fileEntry File entry to be resolved
- * @return {FileEntry}           File entry with the size field
+ * @return {FileEntry}           File entry with the size and type field
  */
-const enrichFileSize = (fileEntry) =>
+const enrichFile = (fileEntry) =>
 	new Promise((resolve, reject) => {
 		fileEntry.file(
 			file => {
+				fileEntry.name = file.name;
 				fileEntry.size = file.size;
+				fileEntry.type = file.type;
 				resolve(fileEntry);
 			},
 			e => reject(`Failed to resolve file entry ${fileEntry}: ${JSON.stringify(e)}`)

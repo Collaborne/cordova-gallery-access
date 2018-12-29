@@ -11,21 +11,18 @@
     "camera roll"
   ],
   "files": [
-    "dist",
-    "lib"
+    "dist"
   ],
   "bugs": {
     "url": "https://github.com/Collaborne/cordova-gallery-access/issues"
   },
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "compile": "babel --presets es2015 -d lib/ src/",
-    "lint": "eslint lib",
-    "build": "npm run build-dist && npm run build-min",
-    "build-dist": "mkdir -p dist && browserify -r $npm_package_main:cordova-gallery-access > dist/cordova-gallery-access.js",
-    "build-min": "uglifyjs dist/cordova-gallery-access.js --comments -o dist/cordova-gallery-access.min.js",
-    "prepublish": "npm run compile && npm run build",
-    "test": "mocha --recursive"
+    "build": "tsc",
+    "lint": "tslint -c tslint.json \"src/**/*.ts\" \"test/**/*.ts\"",
+    "test": "TS_NODE_FILES=true TS_NODE_COMPILER_OPTIONS=\"{\\\"module\\\":\\\"commonjs\\\"}\" node ${_NODE_ARGS} node_modules/.bin/_mocha --recursive -r ts-node/register \"test/**/*.ts\"",
+    "prepublish": "npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
@@ -34,14 +31,14 @@
   "author": "Collaborne <info@collaborne.com>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0",
-    "browserify": "~11.1.0",
-    "eslint": "^2.13.1",
-    "eslint-config-flickr": "~1.1.8",
-    "expect": "1.14.0",
-    "uglify-js": "2.6.2",
-    "chai": "*",
-    "mocha": "*"
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.18",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.12.0",
+    "tslint-config-collaborne": "^0.0.4",
+    "typescript": "^3.2.2"
   }
 }

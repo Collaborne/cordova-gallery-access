@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"outDir": "./dist",
+		"module": "es2015",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"lib": ["es5", "es6", "es2015", "es2016", "dom"],
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"forceConsistentCasingInFileNames": true,
+		"preserveSymlinks": true,
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"strict": true,
+		"strictBindCallApply": true,
+		"strictNullChecks": true,
+		"target": "es5"
+	},
+	"include": [
+		"./src/**/*"
+	]
+}

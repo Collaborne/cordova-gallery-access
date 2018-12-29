@@ -1,22 +1,18 @@
-/* jshint node: true */
-/* jshint expr: true */
+import { expect } from 'chai';
+import 'mocha';
 
-'use strict';
-
-const galleryAccess = require('../src/index.js');
-const chai = require('chai');
-const expect = chai.expect;
+import { _findCameraRollAlbum, Album } from '../src/index';
 
 describe('Main', () => {
 	describe('CameraRoll detection behavior', () => {
 		it('finds iOS album', () => {
-			const albums = [
+			const albums: Album[] = [
 				{ id: 'other-1' },
 				{ id: 'iOS', type: 'PHAssetCollectionSubtypeSmartAlbumUserLibrary' },
 				{ id: 'other-2' },
 			];
 
-			expect(galleryAccess._findCameraRollAlbum(albums).id).to.be.equal('iOS');
+			expect(_findCameraRollAlbum(albums).id).to.be.equal('iOS');
 		});
 
 		it('finds Android album', () => {
@@ -26,7 +22,7 @@ describe('Main', () => {
 				{ id: 'other-2' },
 			];
 
-			expect(galleryAccess._findCameraRollAlbum(albums).id).to.be.equal('Android');
+			expect(_findCameraRollAlbum(albums).id).to.be.equal('Android');
 		});
 
 		it('throws exception if no album was found', () => {
@@ -35,7 +31,7 @@ describe('Main', () => {
 				{ id: 'other-2' },
 			];
 
-			expect(() => galleryAccess._findCameraRollAlbum(albums)).to.throw(Error);
+			expect(() => _findCameraRollAlbum(albums)).to.throw(Error);
 		});
 	});
 });

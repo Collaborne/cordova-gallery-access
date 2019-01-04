@@ -44,7 +44,7 @@ cordovaGallery.load().then(items => {
 The `load` method supports optional parameters:
 
 ```javascript
-Collaborne.CordovaGallery.load({
+cordovaGallery.load({
     albumType: 'PHAssetCollectionSubtypeSmartAlbumUserLibrary',
     count: 10
 });

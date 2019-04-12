@@ -19,6 +19,7 @@ export interface FileEntry {
 	size: number;
 	type: string;
 	file: FileFunction;
+	toInternalURL: () => string;
 }
 
 interface Options {

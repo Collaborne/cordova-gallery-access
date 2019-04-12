@@ -14,7 +14,7 @@ interface MediaItem {
 }
 
 type FileFunction = (success: (file: FileEntry) => any, error: (e: Error) => any) => any;
-interface FileEntry {
+export interface FileEntry {
 	name: string;
 	size: number;
 	type: string;

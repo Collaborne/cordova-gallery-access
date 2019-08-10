@@ -8,7 +8,7 @@ export interface Album {
 	type?: string;
 }
 
-interface MediaItem {
+export interface MediaItem {
 	id: string;
 	thumbnail: string;
 }
